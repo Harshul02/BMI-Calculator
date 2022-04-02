@@ -1,9 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'icon_content.dart';
+import 'reusable_card.dart';
+import 'Constants.dart';
 
-const bottomContainerHeight = 80.0;
-const activeCardColor = Color(0xFF1D1E33);
-const activebottomColor = Color(0xFFEB1555);
+enum Gender{
+  male,
+  female,
+  mix,
+}
+
 
 class InputPage extends StatefulWidget {
   @override
@@ -11,6 +18,10 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+
+  Gender selectedGender= Gender.mix;
+  int height= 180;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,22 +34,79 @@ class _InputPageState extends State<InputPage> {
               child: Row(
             children: [
               Expanded(
-                  child: ReusableCard(activeCardColor, IconContent(FontAwesomeIcons.mars, 'MALE'))),
+                  child: ReusableCard(
+                      selectedGender == Gender.male?activeCardColor:inactiveCardColour, IconContent(FontAwesomeIcons.mars, 'MALE'), (){
+                        setState(() {
+                          selectedGender = Gender.male;
+                        });
+                  })),
               Expanded(
-                  child:ReusableCard(activeCardColor, IconContent(FontAwesomeIcons.venus, 'FEMALE'))),
+                  child:ReusableCard(selectedGender == Gender.female?activeCardColor:inactiveCardColour, IconContent(FontAwesomeIcons.venus, 'FEMALE'), (){
+                        setState(() {
+                          selectedGender = Gender.female;
+                        });
+                  })),
             ],
           )),
           Expanded(
-              child: ReusableCard(activeCardColor)),
-          Expanded(
-              child: Row(
-            children: [
-              Expanded(
-                  child: ReusableCard(activeCardColor)),
-              Expanded(
-                  child: ReusableCard(activeCardColor)),
-            ],
-          )),
+              child: ReusableCard(
+                  activeCardColor, Column(
+                //crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      'HEIGHT',
+                    style: kLabelTextStyle,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        height.toString(),
+                      style: kNumberTextStyle,
+                      ),
+                      Text(
+                        'cm',
+                        style: kLabelTextStyle,
+                      )
+                    ],
+                  ),
+                        SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+    activeTrackColor: Colors.white,
+    inactiveTrackColor: Color(0xFF8D8E98),
+    thumbColor: Color(0xFFEB1555),
+    overlayColor: Color(0x29EB1555),
+    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 15.0),
+    overlayShape: RoundSliderOverlayShape(overlayRadius: 30.0),
+    ),
+
+                          child: Slider(
+                          value: height.toDouble(),
+                          min: 120.0,
+                          max: 220.0,
+                          onChanged:(double newValue){
+                            setState(() {
+                                height=newValue.round();
+                            });
+  }),
+                        )
+                ],
+              ),
+              () {
+                    setState(() {});
+                  })),
+          // Expanded(
+          //     child: Row(
+          //   children: [
+          //     Expanded(
+          //         child: ReusableCard(activeCardColor)),
+          //     Expanded(
+          //         child: ReusableCard(activeCardColor)),
+          //   ],
+          // )),
 
           Container(
             color: activebottomColor,
@@ -50,53 +118,6 @@ class _InputPageState extends State<InputPage> {
   }
 }
 
-class IconContent extends StatelessWidget {
 
-  IconContent(this.icon,this.label);
 
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          size: 80.0,
-        ),
-        SizedBox(
-          height: 15.0,
-        ),
-        Text(
-          label,
-          style: TextStyle(
-          fontSize: 18.0,
-            color: Color(0xFF8D8E98),
-        ),
-        )
-      ],
-    );
-  }
-}
-
-class ReusableCard extends StatelessWidget {
-
-  ReusableCard(@required this.colour, this.cardChild);
-  final Color colour;
-  final Widget cardChild;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: cardChild,
-                margin: EdgeInsets.all(15.0),
-                decoration: BoxDecoration(
-    color: colour,
-    borderRadius: BorderRadius.circular(10.0),
-                ),
-              );
-  }
-}
 
