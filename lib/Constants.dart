@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const bottomContainerHeight = 80.0;
@@ -19,3 +20,24 @@ const kLargeButton = TextStyle(
   fontSize: 25.0,
   fontWeight: FontWeight.bold,
 );
+
+const kTitle = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 50.0,
+);
+
+const ResultText = TextStyle(
+  color: Color(0xFF24D876),
+  fontSize: 22.0,
+  fontWeight: FontWeight.bold,
+);
+
+const BMIText = TextStyle(
+  fontSize: 100.0,
+  fontWeight: FontWeight.bold,
+);
+
+const kBodyStyle = TextStyle(
+  fontSize: 22.0,
+);
+
